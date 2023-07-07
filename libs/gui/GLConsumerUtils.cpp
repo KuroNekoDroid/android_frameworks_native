@@ -15,7 +15,7 @@
  */
 
 #define LOG_TAG "GLConsumerUtils"
-//#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 
 #include <gui/GLConsumer.h>
 #include <math/mat4.h>

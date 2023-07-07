@@ -16,7 +16,7 @@
 
 #define LOG_TAG "InputManager"
 
-//#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 
 #include "InputManager.h"
 #include "InputDispatcherFactory.h"

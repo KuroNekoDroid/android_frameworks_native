@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-//#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 #define LOG_TAG "H2BProducerListener@1.0"
 
 #include <android-base/logging.h>

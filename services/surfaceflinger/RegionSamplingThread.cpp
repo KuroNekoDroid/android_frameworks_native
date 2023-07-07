@@ -19,7 +19,7 @@
 #pragma clang diagnostic ignored "-Wconversion"
 #pragma clang diagnostic ignored "-Wextra"
 
-//#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 #define ATRACE_TAG ATRACE_TAG_GRAPHICS
 #undef LOG_TAG
 #define LOG_TAG "RegionSamplingThread"

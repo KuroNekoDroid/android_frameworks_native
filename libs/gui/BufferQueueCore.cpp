@@ -16,7 +16,7 @@
 
 #define LOG_TAG "BufferQueueCore"
 #define ATRACE_TAG ATRACE_TAG_GRAPHICS
-//#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 
 #define EGL_EGLEXT_PROTOTYPES
 

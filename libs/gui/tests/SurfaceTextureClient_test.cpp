@@ -15,7 +15,7 @@
  */
 
 #define LOG_TAG "SurfaceTextureClient_test"
-//#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 
 #include <EGL/egl.h>
 #include <GLES2/gl2.h>

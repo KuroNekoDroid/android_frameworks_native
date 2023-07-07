@@ -18,7 +18,7 @@
 
 #define LOG_TAG "Fence"
 #define ATRACE_TAG ATRACE_TAG_GRAPHICS
-//#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 
 // We would eliminate the non-conforming zero-length array, but we can't since
 // this is effectively included from the Linux kernel

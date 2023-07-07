@@ -17,7 +17,7 @@
 #define ATRACE_TAG ATRACE_TAG_GRAPHICS
 #undef LOG_TAG
 #define LOG_TAG "VSyncReactor"
-//#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 
 #include <assert.h>
 #include <cutils/properties.h>

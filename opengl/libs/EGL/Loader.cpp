@@ -14,7 +14,7 @@
  ** limitations under the License.
  */
 
-//#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 #define ATRACE_TAG ATRACE_TAG_GRAPHICS
 
 #include "EGL/Loader.h"
