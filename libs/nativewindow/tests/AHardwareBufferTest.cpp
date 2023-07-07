@@ -15,7 +15,7 @@
  */
 
 #define LOG_TAG "AHardwareBuffer_test"
-//#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 
 #include <android/hardware/graphics/common/1.0/types.h>
 #include <gtest/gtest.h>

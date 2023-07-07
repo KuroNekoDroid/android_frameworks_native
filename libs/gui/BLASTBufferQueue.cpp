@@ -18,7 +18,7 @@
 #define LOG_TAG "BLASTBufferQueue"
 
 #define ATRACE_TAG ATRACE_TAG_GRAPHICS
-//#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 
 #include <cutils/atomic.h>
 #include <gui/BLASTBufferQueue.h>

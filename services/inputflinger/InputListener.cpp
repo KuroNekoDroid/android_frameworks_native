@@ -18,7 +18,7 @@
 
 #define ATRACE_TAG ATRACE_TAG_INPUT
 
-//#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 
 #include "InputListener.h"
 

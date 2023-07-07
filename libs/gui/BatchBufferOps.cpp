@@ -18,7 +18,7 @@
 
 #define LOG_TAG "IGBPBatchOps"
 #define ATRACE_TAG ATRACE_TAG_GRAPHICS
-//#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 
 #include <gui/IGraphicBufferProducer.h>
 

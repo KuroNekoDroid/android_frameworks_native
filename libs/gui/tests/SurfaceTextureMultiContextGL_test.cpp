@@ -15,7 +15,7 @@
  */
 
 #define LOG_TAG "SurfaceTextureMultiContextGL_test"
-//#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 
 #include "SurfaceTextureMultiContextGL.h"
 

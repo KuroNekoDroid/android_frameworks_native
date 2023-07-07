@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-//#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 #include "EGL/egl.h"
 #undef LOG_TAG
 #define LOG_TAG "RenderEngine"

@@ -15,7 +15,7 @@
  */
 
 #define LOG_TAG "IAudioManager"
-//#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 #include <utils/Log.h>
 
 #include <stdint.h>

@@ -15,7 +15,7 @@
  */
 
 #define LOG_TAG "SurfaceTextureGLThreadToGL_test"
-//#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 
 #include "SurfaceTextureGLThreadToGL.h"
 

@@ -15,7 +15,7 @@
  */
 
 #define LOG_TAG "CpuConsumer_test"
-//#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 //#define LOG_NNDEBUG 0
 
 #ifdef LOG_NNDEBUG

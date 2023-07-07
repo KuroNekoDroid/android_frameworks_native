@@ -15,7 +15,7 @@
  */
 
 #define LOG_TAG "Input"
-//#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 
 #include <attestation/HmacKeyManager.h>
 #include <cutils/compiler.h>

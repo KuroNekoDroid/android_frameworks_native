@@ -15,7 +15,7 @@
  */
 
 #define LOG_TAG "VelocityControl"
-//#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 
 // Log debug messages about acceleration.
 static constexpr bool DEBUG_ACCELERATION = false;
