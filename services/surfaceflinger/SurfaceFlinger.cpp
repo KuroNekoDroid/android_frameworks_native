@@ -713,10 +713,6 @@ void SurfaceFlinger::bootFinished() {
     // can choose where to stop the animation.
     property_set("service.bootanim.exit", "1");
 
-    const int LOGTAG_SF_STOP_BOOTANIM = 60110;
-    LOG_EVENT_LONG(LOGTAG_SF_STOP_BOOTANIM,
-                   ns2ms(systemTime(SYSTEM_TIME_MONOTONIC)));
-
     sp<IBinder> input(defaultServiceManager()->getService(String16("inputflinger")));
 
     static_cast<void>(mScheduler->schedule([=]() FTL_FAKE_GUARD(kMainThreadContext) {
