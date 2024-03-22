@@ -15,7 +15,7 @@ cc_library {
     cflags: [
         "-Wall",
         "-Werror",
-        "-Ofast"
+        "-O3"
     ],
 
     target: {
@@ -85,7 +85,7 @@ cc_defaults {
         "-Wall",
         "-Werror",
         "-Wno-unused-variable",
-        "-Ofast",
+        "-O3",
     ],
     shared_libs: [
         // ***** DO NOT ADD NEW DEPENDENCIES HERE *****
@@ -119,7 +119,7 @@ cc_defaults {
         "-Wno-error=deprecated-register",
         "-Wno-error=unknown-attributes",
         "-Wno-unused-variable",
-        "-Ofast",
+        "-O3",
     ],
     shared_libs: [
         // ***** DO NOT ADD NEW DEPENDENCIES HERE *****
