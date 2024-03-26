@@ -167,12 +167,12 @@ Layer::Layer(const LayerCreationArgs& args)
     mDrawingState.sequence = 0;
     mDrawingState.transform.set(0, 0);
     mDrawingState.frameNumber = 0;
+    mDrawingState.previousFrameNumber = 0;
     mDrawingState.barrierFrameNumber = 0;
     mDrawingState.producerId = 0;
     mDrawingState.barrierProducerId = 0;
     mDrawingState.bufferTransform = 0;
     mDrawingState.transformToDisplayInverse = false;
-    mDrawingState.crop.makeInvalid();
     mDrawingState.acquireFence = sp<Fence>::make(-1);
     mDrawingState.acquireFenceTime = std::make_shared<FenceTime>(mDrawingState.acquireFence);
     mDrawingState.dataspace = ui::Dataspace::V0_SRGB;
@@ -2156,7 +2156,7 @@ void Layer::setInputInfo(const WindowInfo& info) {
 LayerProto* Layer::writeToProto(LayersProto& layersProto, uint32_t traceFlags) {
     LayerProto* layerProto = layersProto.add_layers();
     writeToProtoDrawingState(layerProto);
-    writeToProtoCommonState(layerProto, LayerVector::StateSet::Drawing, traceFlags);
+    writeToProtoCommonState(layerProto, traceFlags);
 
     if (traceFlags & LayerTracing::TRACE_COMPOSITION) {
         ui::LayerStack layerStack =
@@ -2223,11 +2223,9 @@ void Layer::writeToProtoDrawingState(LayerProto* layerInfo) {
     layerInfo->set_shadow_radius(mEffectiveShadowRadius);
 }
 
-void Layer::writeToProtoCommonState(LayerProto* layerInfo, LayerVector::StateSet stateSet,
-                                    uint32_t traceFlags) {
-    const bool useDrawing = stateSet == LayerVector::StateSet::Drawing;
-    const LayerVector& children = useDrawing ? mDrawingChildren : mCurrentChildren;
-    const State& state = useDrawing ? mDrawingState : mDrawingState;
+void Layer::writeToProtoCommonState(LayerProto* layerInfo, uint32_t traceFlags) {
+    const LayerVector& children = mDrawingChildren;
+    const State& state = mDrawingState;
 
     ui::Transform requestedTransform = state.transform;
 
@@ -2269,7 +2267,7 @@ void Layer::writeToProtoCommonState(LayerProto* layerInfo, LayerVector::StateSet
     LayerProtoHelper::writeToProtoDeprecated(requestedTransform,
                                              layerInfo->mutable_requested_transform());
 
-    auto parent = useDrawing ? mDrawingParent.promote() : mCurrentParent.promote();
+    auto parent = mDrawingParent.promote();
     if (parent != nullptr) {
         layerInfo->set_parent(parent->sequence);
     } else {
@@ -2288,13 +2286,8 @@ void Layer::writeToProtoCommonState(LayerProto* layerInfo, LayerVector::StateSet
     layerInfo->set_owner_uid(mOwnerUid);
 
     if ((traceFlags & LayerTracing::TRACE_INPUT) && needsInputInfo()) {
-        WindowInfo info;
-        if (useDrawing) {
-            info = fillInputInfo(
-                    InputDisplayArgs{.transform = &kIdentityTransform, .isSecure = true});
-        } else {
-            info = state.inputInfo;
-        }
+        WindowInfo info = fillInputInfo(
+                InputDisplayArgs{.transform = &kIdentityTransform, .isSecure = true});
 
         LayerProtoHelper::writeToProto(info, state.touchableRegionCrop,
                                        [&]() { return layerInfo->mutable_input_window_info(); });
@@ -2884,6 +2877,10 @@ void Layer::onLayerDisplayed(ftl::SharedFuture<FenceResult> futureFenceResult,
         ch->name = mName;
     }
     mPreviouslyPresentedLayerStacks.push_back(layerStack);
+
+    if (mDrawingState.frameNumber > 0) {
+        mDrawingState.previousFrameNumber = mDrawingState.frameNumber;
+    }
 }
 
 void Layer::onSurfaceFrameCreated(
@@ -3031,8 +3028,9 @@ bool Layer::updateGeometry() {
 }
 
 bool Layer::setMatrix(const layer_state_t::matrix22_t& matrix) {
-    if (mRequestedTransform.dsdx() == matrix.dsdx && mRequestedTransform.dtdy() == matrix.dtdy &&
-        mRequestedTransform.dtdx() == matrix.dtdx && mRequestedTransform.dsdy() == matrix.dsdy) {
+    // NOTICE: the order of dtdx/dtdy in ui::Transform and layer_state_t::matrix22_t is opposite.
+    if (mRequestedTransform.dsdx() == matrix.dsdx && mRequestedTransform.dtdx() == matrix.dtdy &&
+        mRequestedTransform.dtdy() == matrix.dtdx && mRequestedTransform.dsdy() == matrix.dsdy) {
         return false;
     }
 
@@ -3062,6 +3060,7 @@ bool Layer::setPosition(float x, float y) {
 void Layer::resetDrawingStateBufferInfo() {
     mDrawingState.producerId = 0;
     mDrawingState.frameNumber = 0;
+    mDrawingState.previousFrameNumber = 0;
     mDrawingState.releaseBufferListener = nullptr;
     mDrawingState.buffer = nullptr;
     mDrawingState.acquireFence = sp<Fence>::make(-1);
@@ -3348,6 +3347,7 @@ bool Layer::setTransactionCompletedListeners(const std::vector<sp<CallbackHandle
             // If this transaction set an acquire fence on this layer, set its acquire time
             handle->acquireTimeOrFence = mCallbackHandleAcquireTimeOrFence;
             handle->frameNumber = mDrawingState.frameNumber;
+            handle->previousFrameNumber = mDrawingState.previousFrameNumber;
 
             // Store so latched time and release fence can be set
             mDrawingState.callbackHandles.push_back(handle);
@@ -4243,7 +4243,6 @@ void Layer::updateSnapshot(bool updateGeometry) {
         prepareBasicGeometryCompositionState();
         prepareGeometryCompositionState();
         snapshot->roundedCorner = getRoundedCornerState();
-        snapshot->stretchEffect = getStretchEffect();
         snapshot->transformedBounds = mScreenBounds;
         if (mEffectiveShadowRadius > 0.f) {
             snapshot->shadowSettings = mFlinger->mDrawingState.globalShadowSettings;
