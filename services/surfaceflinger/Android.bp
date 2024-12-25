@@ -33,6 +33,7 @@ cc_defaults {
 		"-fno-math-errno",
 		"-fcf-protection=none",
 		"-ffp-contract=fast",
+        "-fopenmp",
     ],
     whole_program_vtables: true,
     ldflags: [
