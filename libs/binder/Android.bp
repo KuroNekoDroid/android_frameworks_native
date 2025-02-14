@@ -155,6 +155,7 @@ cc_library {
             ],
         },
     },
+    whole_program_vtables: true,
 
     aidl: {
         export_aidl_headers: true,
