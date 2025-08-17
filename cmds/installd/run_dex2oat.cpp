@@ -328,9 +328,11 @@ void RunDex2Oat::PrepareCompilerRuntimeAndPerfConfigFlags(bool post_bootcomplete
     AddRuntimeArg(MapPropertyToArg("dalvik.vm.dex2oat-Xms", "-Xms%s"));
     AddRuntimeArg(MapPropertyToArg("dalvik.vm.dex2oat-Xmx", "-Xmx%s"));
 
-    // Enable compiling dex files in isolation.
+    // Enable compiling dex files in isolation on low ram devices.
     // It takes longer but reduces the memory footprint.
-    AddArg("--compile-individually");
+    if (GetBoolProperty("ro.config.low_ram", false)) {
+      AddArg("--compile-individually");
+    }
 }
 
 void RunDex2Oat::Exec(int exit_code) {
