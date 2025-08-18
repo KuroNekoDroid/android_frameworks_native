@@ -352,7 +352,8 @@ SurfaceFlinger::SurfaceFlinger(Factory& factory) : SurfaceFlinger(factory, SkipI
 
     useHwcForRgbToYuv = force_hwc_copy_for_virtual_displays(false);
 
-    maxFrameBufferAcquiredBuffers = max_frame_buffer_acquired_buffers(2);
+    int64_t buffers = max_frame_buffer_acquired_buffers(2);
+    maxFrameBufferAcquiredBuffers = buffers < 3 ? buffers : 6;
 
     maxGraphicsWidth = std::max(max_graphics_width(0), 0);
     maxGraphicsHeight = std::max(max_graphics_height(0), 0);
