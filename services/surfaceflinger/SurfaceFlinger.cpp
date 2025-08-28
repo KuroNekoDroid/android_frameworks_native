@@ -424,7 +424,7 @@ SurfaceFlinger::SurfaceFlinger(Factory& factory) : SurfaceFlinger(factory, SkipI
     property_get("debug.sf.disable_client_composition_cache", value, "0");
     mDisableClientCompositionCache = atoi(value);
 
-    property_get("debug.sf.predict_hwc_composition_strategy", value, "1");
+    property_get("debug.sf.predict_hwc_composition_strategy", value, "0");
     mPredictCompositionStrategy = atoi(value);
 
     property_get("debug.sf.treat_170m_as_sRGB", value, "0");
