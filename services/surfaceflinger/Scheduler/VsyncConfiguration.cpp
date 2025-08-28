@@ -105,7 +105,7 @@ PhaseOffsets::PhaseOffsets(Fps currentRefreshRate)
                      // vsync.
                      getProperty("debug.sf.phase_offset_threshold_for_next_vsync_ns")
                              .value_or(std::numeric_limits<nsecs_t>::max()),
-                     getProperty("debug.sf.hwc.min.duration").value_or(0)) {}
+                     getProperty("debug.sf.hwc.min.duration").value_or(2000000)) {}
 
 PhaseOffsets::PhaseOffsets(Fps currentFps, nsecs_t vsyncPhaseOffsetNs, nsecs_t sfVSyncPhaseOffsetNs,
                            std::optional<nsecs_t> earlySfOffsetNs,
@@ -358,7 +358,7 @@ WorkDuration::WorkDuration(Fps currentRefreshRate)
                      getProperty("debug.sf.early.app.duration").value_or(mAppDuration),
                      getProperty("debug.sf.earlyGl.sf.duration").value_or(mSfDuration),
                      getProperty("debug.sf.earlyGl.app.duration").value_or(mAppDuration),
-                     getProperty("debug.sf.hwc.min.duration").value_or(0)) {
+                     getProperty("debug.sf.hwc.min.duration").value_or(2000000)) {
     validateSysprops();
 }
 
